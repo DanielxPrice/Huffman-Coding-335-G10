@@ -1,5 +1,8 @@
 import tkinter as tk
 
+uncompressedFile = ""
+compressedFile = ""
+
 def on_close():
     root.destroy()
 
@@ -10,13 +13,20 @@ def start_move(event):
 def on_move(event):
     root.geometry(f"500x600+{event.x_root - root.x}+{event.y_root - root.y}")
 
+
+
 # Fuction for button 1 pressing
 def button_one_pressed():
     print("Button 1 pressed!")
 
+
+
 # Function for button 2 pressing
 def button_two_pressed():
     print("Button 2 pressed!")
+
+
+
 
 
 
