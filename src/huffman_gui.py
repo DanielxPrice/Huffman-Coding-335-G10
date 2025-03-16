@@ -1,10 +1,18 @@
 import tkinter as tk
+import huffman_algo
+import sys
 
 uncompressedFile = ""
 compressedFile = ""
+global text, encoded_text, decoded_result, file_path
+text, encoded_text, decoded_result = "", "", ""
+file_path = ""
+codes = {} 
+buttonOneFlag = False
 
 def on_close():
     root.destroy()
+    sys.exit()
 
 def start_move(event):
     root.x = event.x
@@ -16,15 +24,42 @@ def on_move(event):
 
 
 # Fuction for button 1 pressing
-def button_one_pressed():
+def button_one_pressed(textbox1):
     print("Button 1 pressed!")
+    buttonOneFlag = True
+    codes, text, encoded_text, file_path = huffman_algo.encode()
+    print("Original Text: ", text)
+    print("Huffman Codes: ", codes)
+    print("Encoded Text: ", encoded_text)
 
+    # if decoded_result is not None:
+    #     print("Decoded Text: ", decoded_result)
 
+    codes_str = "\n".join(f"'{char}': {code}" for char, code in codes.items())
+
+    # Enable the textbox for editing (temporarily)
+    textbox1.config(state=tk.NORMAL)
+
+    # Clear any existing content
+    textbox1.delete(1.0, tk.END)
+
+    # Insert the Huffman codes into the textbox
+    textbox1.insert(tk.END, "Huffman Codes:\n")
+    textbox1.insert(tk.END, codes_str)
+
+    # Set the textbox back to read-only
+    textbox1.config(state=tk.DISABLED)
 
 # Function for button 2 pressing
 def button_two_pressed():
+    if buttonOneFlag:
+        print("Encode First!")
+        return
     print("Button 2 pressed!")
-
+    print("File Path ", file_path)
+    decoded_result = huffman_algo.decode("compressed.bin", codes)
+    # if decoded_result is not None:
+    #     print("Decoded Text: ", decoded_result)
 
 
 
@@ -63,7 +98,7 @@ def main():
     title1.pack(pady=8)
 
     # Button 1
-    button1 = tk.Button(root, text="Select Text File", command=button_one_pressed, **button_style)
+    button1 = tk.Button(root, text="Select Text File", command=lambda: button_one_pressed(textbox1), **button_style)
     button1.pack(pady=8)
 
     # Text Label for compression details
@@ -75,11 +110,29 @@ def main():
     textbox_label1 = tk.Label(root, text="Huffman Codes:", **label_style2)
     textbox_label1.pack(pady=8)
     
-    # Textbox 1 (Read-only)
-    textbox1 = tk.Text(root, height=4, width=40, **textbox_style)
-    textbox1.pack(pady=8)
-    textbox1.insert(tk.END, "Huffman Codes...")
+    '''
+    Textbox for Huffman Codes
+    '''
+    # Create a frame to hold the Text widget and Scrollbar
+    textbox_frame = tk.Frame(root)
+    textbox_frame.pack(pady=8)
+
+    # Create Text widget (for displaying Huffman codes)
+    textbox1 = tk.Text(textbox_frame, height=4, width=40, **textbox_style)
+    textbox1.pack(side=tk.LEFT)
+
+    # Create a Scrollbar and attach it to the Text widget
+    scrollbar = tk.Scrollbar(textbox_frame, command=textbox1.yview)
+    scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
+
+    # Link the scrollbar to the Text widget
+    textbox1.config(yscrollcommand=scrollbar.set)
+
+    # Set the Text widget to be read-only (optional)
     textbox1.config(state=tk.DISABLED)
+
+    textbox1.insert(tk.END, "Huffman Codes will appear here...")
+
 
     # Button 2
     button2 = tk.Button(root, text="Decompress File", command=button_two_pressed, **button_style)

@@ -54,20 +54,20 @@ def build_codes(node, prefix = "", code_map = {}):
 
     return code_map
 
-# Step 4: Get user input and compute Huffman Encoding
-file_path = open_file_dialog()
-text = read_file_as_ascii(file_path)
+# # Step 4: Get user input and compute Huffman Encoding
+# file_path = open_file_dialog()
+# text = read_file_as_ascii(file_path)
 
-freq_map = {char: text.count(char) for char in set(text)}
+# freq_map = {char: text.count(char) for char in set(text)}
 
-root = build_huffman_tree(freq_map)
-codes = build_codes(root)
+# root = build_huffman_tree(freq_map)
+# codes = build_codes(root)
 
-encoded_text = "".join(codes[char] for char in text)
+# encoded_text = "".join(codes[char] for char in text)
 
-print("Original Text: ", text)
-print("Huffman Codes: ", codes)
-print("Encoded Text: ", encoded_text)
+# print("Original Text: ", text)
+# print("Huffman Codes: ", codes)
+# print("Encoded Text: ", encoded_text)
 
 def save_to_bitarray_binary(encoded_text, file_path):
     """Convert binary-encoded text to a bitarray and save it to a binary file."""
@@ -83,8 +83,8 @@ def save_to_bitarray_binary(encoded_text, file_path):
     except Exception as e:
         print(f"Error converting to bitarray or saving: {e}")
 
-save_location = "compressed.bin"
-save_to_bitarray_binary(encoded_text, save_location)
+# save_location = "compressed.bin"
+# save_to_bitarray_binary(encoded_text, save_location)
 
 def read_binary_file(file_path):
     try:
@@ -118,10 +118,45 @@ def huffman_decode_from_binary_file(file_path, huffman_codes):
     
     return decoded_text
 
-# Example usage
-file_path = "compressed.bin"  # Specify the binary file path
+# # Example usage
+# file_path = "compressed.bin"  # Specify the binary file path
 
-decoded_result = huffman_decode_from_binary_file(file_path, codes)
+# decoded_result = huffman_decode_from_binary_file(file_path, codes)
 
-if decoded_result is not None:
-    print("Decoded Text: ", decoded_result)
+# if decoded_result is not None:
+#     print("Decoded Text: ", decoded_result)
+
+
+def encode():
+    # Step 4: Get user input and compute Huffman Encoding
+    file_path = open_file_dialog()
+    text = read_file_as_ascii(file_path)
+
+    freq_map = {char: text.count(char) for char in set(text)}
+
+    root = build_huffman_tree(freq_map)
+    codes = build_codes(root)
+
+    encoded_text = "".join(codes[char] for char in text)
+
+    # print("Original Text: ", text)
+    # print("Huffman Codes: ", codes)
+    # print("Encoded Text: ", encoded_text)
+
+    save_location = "compressed.bin"
+    save_to_bitarray_binary(encoded_text, save_location)
+
+    file_path = "compressed.bin"  # Specify the binary file path
+
+    # decoded_result = huffman_decode_from_binary_file(file_path, codes)
+
+    # if decoded_result is not None:
+    #     print("Decoded Text: ", decoded_result)
+    print("file_path: ", file_path)
+    return codes, text, encoded_text, file_path
+
+def decode(file_path, codes):
+    file_path = "compressed.bin"
+    decoded_result = huffman_decode_from_binary_file(file_path, codes)
+    if decoded_result is not None:
+        print("Decoded Text: ", decoded_result)
