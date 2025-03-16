@@ -127,9 +127,13 @@ def huffman_decode_from_binary_file(file_path, huffman_codes):
 #     print("Decoded Text: ", decoded_result)
 
 
-def encode():
+def encodeAndDecode(trigger, filePath2):
     # Step 4: Get user input and compute Huffman Encoding
-    file_path = open_file_dialog()
+    if trigger == "encode":
+        file_path = open_file_dialog()
+    elif trigger == "decode":
+        file_path = filePath2
+
     text = read_file_as_ascii(file_path)
 
     freq_map = {char: text.count(char) for char in set(text)}
@@ -148,15 +152,16 @@ def encode():
 
     file_path = "compressed.bin"  # Specify the binary file path
 
-    # decoded_result = huffman_decode_from_binary_file(file_path, codes)
+    decoded_result = huffman_decode_from_binary_file(file_path, codes)
 
     # if decoded_result is not None:
     #     print("Decoded Text: ", decoded_result)
-    print("file_path: ", file_path)
-    return codes, text, encoded_text, file_path
+    print("File Path Test 3 ", file_path)
+    if trigger == "encode":
+        return codes, text, encoded_text, file_path
+    elif trigger == "decode":
+        return decoded_result
+    else:
+        print("Error")
 
-def decode(file_path, codes):
-    file_path = "compressed.bin"
-    decoded_result = huffman_decode_from_binary_file(file_path, codes)
-    if decoded_result is not None:
-        print("Decoded Text: ", decoded_result)
+

@@ -27,13 +27,16 @@ def on_move(event):
 def button_one_pressed(textbox1):
     print("Button 1 pressed!")
     buttonOneFlag = True
-    codes, text, encoded_text, file_path = huffman_algo.encode()
+    trigger = "encode"
+    codes, text, encoded_text, file_path = huffman_algo.encodeAndDecode(trigger)
     print("Original Text: ", text)
     print("Huffman Codes: ", codes)
     print("Encoded Text: ", encoded_text)
 
     # if decoded_result is not None:
     #     print("Decoded Text: ", decoded_result)
+
+    print("File Path Test 1 ", file_path)
 
     codes_str = "\n".join(f"'{char}': {code}" for char, code in codes.items())
 
@@ -49,6 +52,7 @@ def button_one_pressed(textbox1):
 
     # Set the textbox back to read-only
     textbox1.config(state=tk.DISABLED)
+    return file_path
 
 # Function for button 2 pressing
 def button_two_pressed():
@@ -56,10 +60,10 @@ def button_two_pressed():
         print("Encode First!")
         return
     print("Button 2 pressed!")
-    print("File Path ", file_path)
-    decoded_result = huffman_algo.decode("compressed.bin", codes)
-    # if decoded_result is not None:
-    #     print("Decoded Text: ", decoded_result)
+    trigger = "decode"
+    decoded_result = huffman_algo.encodeAndDecode(trigger)
+    print("Decoded Result 101: ", decoded_result)
+    
 
 
 
