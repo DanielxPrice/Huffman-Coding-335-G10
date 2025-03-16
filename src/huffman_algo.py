@@ -68,3 +68,22 @@ encoded_text = "".join(codes[char] for char in text)
 print("Original Text: ", text)
 print("Huffman Codes: ", codes)
 print("Encoded Text: ", encoded_text)
+
+from bitarray import bitarray
+
+def save_to_bitarray_binary(encoded_text, file_path):
+    """Convert binary-encoded text to a bitarray and save it to a binary file."""
+    try:
+        # Convert binary-encoded text to a bitarray
+        bit_array = bitarray(encoded_text)  # Directly creates a bitarray from the binary string
+
+        # Save the bitarray to a binary file
+        with open(file_path, 'wb') as binary_file:
+            bit_array.tofile(binary_file)
+
+        print(f"Bitarray successfully saved to binary file: {file_path}")
+    except Exception as e:
+        print(f"Error converting to bitarray or saving: {e}")
+
+save_location = "compressed.bin"
+save_to_bitarray_binary(encoded_text, save_location)
