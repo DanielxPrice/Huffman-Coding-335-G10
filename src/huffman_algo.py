@@ -69,8 +69,6 @@ print("Original Text: ", text)
 print("Huffman Codes: ", codes)
 print("Encoded Text: ", encoded_text)
 
-from bitarray import bitarray
-
 def save_to_bitarray_binary(encoded_text, file_path):
     """Convert binary-encoded text to a bitarray and save it to a binary file."""
     try:
@@ -87,3 +85,43 @@ def save_to_bitarray_binary(encoded_text, file_path):
 
 save_location = "compressed.bin"
 save_to_bitarray_binary(encoded_text, save_location)
+
+def read_binary_file(file_path):
+    try:
+        bit_array = bitarray()
+        with open(file_path, 'rb') as binary_file:
+            bit_array.fromfile(binary_file)
+        return bit_array
+    except Exception as e:
+        print(f"Error reading binary file: {e}")
+        return None
+
+def huffman_decode_from_binary_file(file_path, huffman_codes):
+    # Read the binary file into a bitarray
+    bit_array = read_binary_file(file_path)
+    if bit_array is None:
+        return None
+
+    # Convert bitarray to a string of 0s and 1s
+    encoded_text = bit_array.to01()  # Convert the bitarray to a binary string
+
+    # Decode using the existing decoding logic
+    reverse_codes = {code: char for char, code in huffman_codes.items()}
+    decoded_text = ""
+    temp_code = ""
+
+    for bit in encoded_text:
+        temp_code += bit
+        if temp_code in reverse_codes:
+            decoded_text += reverse_codes[temp_code]
+            temp_code = ""
+    
+    return decoded_text
+
+# Example usage
+file_path = "compressed.bin"  # Specify the binary file path
+
+decoded_result = huffman_decode_from_binary_file(file_path, codes)
+
+if decoded_result is not None:
+    print("Decoded Text: ", decoded_result)
