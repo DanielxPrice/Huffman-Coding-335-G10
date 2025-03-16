@@ -4,9 +4,9 @@ import sys
 
 uncompressedFile = ""
 compressedFile = ""
-global text, encoded_text, decoded_result, file_path
-text, encoded_text, decoded_result = "", "", ""
-file_path = ""
+# global text, encoded_text, decoded_result, file_path
+# text, encoded_text, decoded_result = "", "", ""
+# file_path = ""
 codes = {} 
 buttonOneFlag = False
 
@@ -27,8 +27,9 @@ def on_move(event):
 def button_one_pressed(textbox1):
     print("Button 1 pressed!")
     buttonOneFlag = True
+    global text, encoded_text, decoded_result, file_path
     trigger = "encode"
-    codes, text, encoded_text, file_path = huffman_algo.encodeAndDecode(trigger)
+    codes, text, encoded_text, file_path = huffman_algo.encodeAndDecode(trigger, None)
     print("Original Text: ", text)
     print("Huffman Codes: ", codes)
     print("Encoded Text: ", encoded_text)
@@ -52,18 +53,31 @@ def button_one_pressed(textbox1):
 
     # Set the textbox back to read-only
     textbox1.config(state=tk.DISABLED)
-    return file_path
 
 # Function for button 2 pressing
-def button_two_pressed():
+def button_two_pressed(textbox2):
     if buttonOneFlag:
         print("Encode First!")
         return
     print("Button 2 pressed!")
     trigger = "decode"
-    decoded_result = huffman_algo.encodeAndDecode(trigger)
+    print("File path from button two pressed func ", file_path)
+    decoded_result = huffman_algo.encodeAndDecode(trigger, file_path)
     print("Decoded Result 101: ", decoded_result)
-    
+
+
+    textbox2.config(state=tk.NORMAL)
+
+    # Clear any existing content
+    textbox2.delete(1.0, tk.END)
+
+    # Insert the decoded text into the textbox
+    textbox2.insert(tk.END, "Decoded Result:\n")
+    textbox2.insert(tk.END, decoded_result)
+
+    # Set the textbox back to read-only
+    textbox2.config(state=tk.DISABLED)
+        
 
 
 
@@ -139,18 +153,41 @@ def main():
 
 
     # Button 2
-    button2 = tk.Button(root, text="Decompress File", command=button_two_pressed, **button_style)
+    button2 = tk.Button(root, text="Decompress File", command=lambda: button_two_pressed(textbox2), **button_style)
     button2.pack(pady=8)
 
     # Textbox Label
     textbox_label2 = tk.Label(root, text="Decoded Text:", **label_style2)
     textbox_label2.pack(pady=5)
     
-    # Textbox 2 (Read-only)
-    textbox2 = tk.Text(root, height=4, width=40, **textbox_style)
-    textbox2.pack(pady=8)
-    textbox2.insert(tk.END, "Decoded Text...")
+    '''
+    Textbox for Decoding
+    '''
+    # # Textbox 2 (Read-only)
+    # textbox2 = tk.Text(root, height=4, width=40, **textbox_style)
+    # textbox2.pack(pady=8)
+    # textbox2.insert(tk.END, "Decoded Text...")
+    # textbox2.config(state=tk.DISABLED)
+    # Create a frame to hold the Text widget and Scrollbar for textbox2
+    textbox2_frame = tk.Frame(root)
+    textbox2_frame.pack(pady=8)
+
+    # Create Text widget (for displaying Decoded Text)
+    textbox2 = tk.Text(textbox2_frame, height=4, width=40, **textbox_style)
+    textbox2.pack(side=tk.LEFT)
+
+    # Create a Scrollbar and attach it to the Text widget
+    scrollbar2 = tk.Scrollbar(textbox2_frame, command=textbox2.yview)
+    scrollbar2.pack(side=tk.RIGHT, fill=tk.Y)
+
+    # Link the scrollbar to the Text widget
+    textbox2.config(yscrollcommand=scrollbar2.set)
+
+    # Set the Text widget to be read-only (optional)
     textbox2.config(state=tk.DISABLED)
+
+    # Insert some default text (for display purposes)
+    textbox2.insert(tk.END, "Decoded Text will appear here...")
 
 
     root.mainloop()

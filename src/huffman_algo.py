@@ -7,6 +7,7 @@ def open_file_dialog():
     root = tk.Tk()
     root.withdraw()  # Hide the root window
     file_path = filedialog.askopenfilename(filetypes=[("Text Files", "*.txt")])
+    print("Filepath from open file dialog func", file_path)
     return file_path
 
 def read_file_as_ascii(file_path):
@@ -149,7 +150,7 @@ def encodeAndDecode(trigger, filePath2):
 
     save_location = "compressed.bin"
     save_to_bitarray_binary(encoded_text, save_location)
-
+    file_path_og = file_path
     file_path = "compressed.bin"  # Specify the binary file path
 
     decoded_result = huffman_decode_from_binary_file(file_path, codes)
@@ -158,7 +159,7 @@ def encodeAndDecode(trigger, filePath2):
     #     print("Decoded Text: ", decoded_result)
     print("File Path Test 3 ", file_path)
     if trigger == "encode":
-        return codes, text, encoded_text, file_path
+        return codes, text, encoded_text, file_path_og
     elif trigger == "decode":
         return decoded_result
     else:
