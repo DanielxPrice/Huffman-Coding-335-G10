@@ -2,6 +2,7 @@ import heapq # Heap Queue for priority queue operations
 import tkinter as tk
 from tkinter import filedialog
 from bitarray import bitarray
+import os
 
 
 def show_popup():
@@ -90,7 +91,7 @@ def build_codes(node, prefix = "", code_map = {}):
 # print("Huffman Codes: ", codes)
 # print("Encoded Text: ", encoded_text)
 
-def save_to_bitarray_binary(encoded_text, file_path):
+def save_to_bitarray_binary(encoded_text, file_path, file_path_og):
     """Convert binary-encoded text to a bitarray and save it to a binary file."""
     try:
         # Convert binary-encoded text to a bitarray
@@ -174,9 +175,17 @@ def encodeAndDecode(trigger, filePath2):
     # print("Encoded Text: ", encoded_text)
 
     save_location = "compressed.bin"
-    save_to_bitarray_binary(encoded_text, save_location)
+    save_to_bitarray_binary(encoded_text, save_location, file_path)
     file_path_og = file_path
     file_path = "compressed.bin"  # Specify the binary file path
+
+    # Get byte sizes of original and compressed files
+    #global original_file_size, compressed_file_size
+    original_file_size = os.path.getsize(file_path_og)  # Assuming file_path_og is the path to the original file
+    compressed_file_size = os.path.getsize(file_path)   # Path to the compressed file
+        
+    print(f"Original file size: {original_file_size} bytes")
+    print(f"Compressed file size: {compressed_file_size} bytes")
 
     decoded_result = huffman_decode_from_binary_file(file_path, codes)
 
@@ -187,10 +196,12 @@ def encodeAndDecode(trigger, filePath2):
     #     print("Decoded Text: ", decoded_result)
     print("File Path Test 3 ", file_path)
     if trigger == "encode":
-        return codes, text, encoded_text, file_path_og
+        return codes, text, encoded_text, file_path_og, original_file_size, compressed_file_size
     elif trigger == "decode":
         return decoded_result
     else:
         print("Error")
 
+# def get_byte_sizes():
+#     return original_file_size, compressed_file_size
 

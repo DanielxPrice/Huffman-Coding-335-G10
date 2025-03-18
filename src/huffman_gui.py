@@ -2,8 +2,7 @@ import tkinter as tk
 import huffman_algo
 import sys
 
-uncompressedFile = ""
-compressedFile = ""
+
 # global text, encoded_text, decoded_result, file_path
 # text, encoded_text, decoded_result = "", "", ""
 # file_path = ""
@@ -24,20 +23,29 @@ def on_move(event):
 
 
 # Fuction for button 1 pressing
-def button_one_pressed(textbox1):
+def button_one_pressed(textbox1, text_label):
     print("Button 1 pressed!")
     buttonOneFlag = True
     global text, encoded_text, decoded_result, file_path
     trigger = "encode"
-    codes, text, encoded_text, file_path = huffman_algo.encodeAndDecode(trigger, None)
+    codes, text, encoded_text, file_path, originalSize, compressedSize = huffman_algo.encodeAndDecode(trigger, None)
     print("Original Text: ", text)
     print("Huffman Codes: ", codes)
     print("Encoded Text: ", encoded_text)
+    print(f"Original file size: {originalSize} bytes")
+    print(f"Compressed file size: {compressedSize} bytes")
 
     # if decoded_result is not None:
     #     print("Decoded Text: ", decoded_result)
 
     print("File Path Test 1 ", file_path)
+
+    # Calculate the compression ratio
+    ratio = (compressedSize / originalSize) * 100  # Ratio as percentage
+    compressionDetailSTR = f"Original: {originalSize} bytes | Compressed: {compressedSize} bytes | Ratio: {ratio:.2f}%"
+    
+    # Update the label with the compression details
+    text_label.config(text=compressionDetailSTR)
 
     codes_str = "\n".join(f"'{char}': {code}" for char, code in codes.items())
 
@@ -115,14 +123,21 @@ def main():
     title1 = tk.Label(root, text="📦 Huffman Coding Compression Tool", **label_style)
     title1.pack(pady=8)
 
-    # Button 1
-    button1 = tk.Button(root, text="Select Text File", command=lambda: button_one_pressed(textbox1), **button_style)
-    button1.pack(pady=8)
-
-    # Text Label for compression details
     defaultText = "Compression details will appear here."
     text_label = tk.Label(root, text=defaultText, **label_style2)
     text_label.pack(pady=8)
+
+    # Button 1
+    button1 = tk.Button(root, text="Select Text File", command=lambda: button_one_pressed(textbox1, text_label), **button_style)
+    button1.pack(pady=8)
+
+    # Text Label for compression details
+    # ratio = str(compressedSize / originalSize)
+    # compressionDetailSTR = "Original: " + originalSize + " | Compressed: " + compressedSize + " | Ratio: " + ratio + "%" 
+
+    # defaultText = "Compression details will appear here."
+    # text_label = tk.Label(root, text=defaultText, **label_style2)
+    # text_label.pack(pady=8)
 
     # Textbox Label
     textbox_label1 = tk.Label(root, text="Huffman Codes:", **label_style2)
