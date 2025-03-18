@@ -3,6 +3,26 @@ import tkinter as tk
 from tkinter import filedialog
 from bitarray import bitarray
 
+
+def show_popup():
+    popup = tk.Toplevel()
+    popup.title("")
+    popup.geometry("300x150")
+    popup.configure(bg="#4c789e") 
+
+    # Message Label
+    if encodeTrigger == True:
+        label = tk.Label(popup, text="✅ Compressed file saved as 'compressed.bin'.", bg="#4c789e", fg="#ECF0F1",  font=("Courier New", 10, "bold"), wraplength=280)
+    elif decodeTrigger == True:
+        label = tk.Label(popup, text="Decoding successful! Original text matches.", bg="#4c789e", fg="#ECF0F1",  font=("Courier New", 10, "bold"), wraplength=280)
+    label.pack(pady=15, padx=15)
+
+    # Okay Button
+    okay_button = tk.Button(popup, text="OK", command=popup.destroy, bg="#27AE60", fg="white", font=("Courier New", 10, "bold"),relief="flat",padx=10, pady=5)
+    okay_button.pack(pady=10)
+
+    popup.after(10, lambda: None)
+
 def open_file_dialog():
     root = tk.Tk()
     root.withdraw()  # Hide the root window
@@ -130,10 +150,15 @@ def huffman_decode_from_binary_file(file_path, huffman_codes):
 
 def encodeAndDecode(trigger, filePath2):
     # Step 4: Get user input and compute Huffman Encoding
+    global encodeTrigger, decodeTrigger
     if trigger == "encode":
         file_path = open_file_dialog()
+        encodeTrigger = True
+        decodeTrigger = False
     elif trigger == "decode":
         file_path = filePath2
+        decodeTrigger = True
+        encodeTrigger = False
 
     text = read_file_as_ascii(file_path)
 
@@ -154,6 +179,9 @@ def encodeAndDecode(trigger, filePath2):
     file_path = "compressed.bin"  # Specify the binary file path
 
     decoded_result = huffman_decode_from_binary_file(file_path, codes)
+
+    if text == decoded_result:
+        show_popup()
 
     # if decoded_result is not None:
     #     print("Decoded Text: ", decoded_result)
