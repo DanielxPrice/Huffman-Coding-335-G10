@@ -2,10 +2,6 @@ import tkinter as tk
 import huffman_algo
 import sys
 
-
-# global text, encoded_text, decoded_result, file_path
-# text, encoded_text, decoded_result = "", "", ""
-# file_path = ""
 codes = {} 
 buttonOneFlag = False
 
@@ -35,21 +31,19 @@ def button_one_pressed(textbox1, text_label):
     print(f"Original file size: {originalSize} bytes")
     print(f"Compressed file size: {compressedSize} bytes")
 
-    # if decoded_result is not None:
-    #     print("Decoded Text: ", decoded_result)
-
     print("File Path Test 1 ", file_path)
 
     # Calculate the compression ratio
-    ratio = (compressedSize / originalSize) * 100  # Ratio as percentage
+    ratio = (compressedSize / originalSize) * 100 
     compressionDetailSTR = f"Original: {originalSize} bytes | Compressed: {compressedSize} bytes | Ratio: {ratio:.2f}%"
     
     # Update the label with the compression details
     text_label.config(text=compressionDetailSTR)
 
+    # Creating the string for the textbox
     codes_str = "\n".join(f"'{char}': {code}" for char, code in codes.items())
 
-    # Enable the textbox for editing (temporarily)
+    # Enable the textbox for editing
     textbox1.config(state=tk.NORMAL)
 
     # Clear any existing content
@@ -86,11 +80,6 @@ def button_two_pressed(textbox2):
     # Set the textbox back to read-only
     textbox2.config(state=tk.DISABLED)
         
-
-
-
-
-
 
 def main():
     global root
@@ -131,14 +120,6 @@ def main():
     button1 = tk.Button(root, text="Select Text File", command=lambda: button_one_pressed(textbox1, text_label), **button_style)
     button1.pack(pady=8)
 
-    # Text Label for compression details
-    # ratio = str(compressedSize / originalSize)
-    # compressionDetailSTR = "Original: " + originalSize + " | Compressed: " + compressedSize + " | Ratio: " + ratio + "%" 
-
-    # defaultText = "Compression details will appear here."
-    # text_label = tk.Label(root, text=defaultText, **label_style2)
-    # text_label.pack(pady=8)
-
     # Textbox Label
     textbox_label1 = tk.Label(root, text="Huffman Codes:", **label_style2)
     textbox_label1.pack(pady=8)
@@ -178,12 +159,6 @@ def main():
     '''
     Textbox for Decoding
     '''
-    # # Textbox 2 (Read-only)
-    # textbox2 = tk.Text(root, height=4, width=40, **textbox_style)
-    # textbox2.pack(pady=8)
-    # textbox2.insert(tk.END, "Decoded Text...")
-    # textbox2.config(state=tk.DISABLED)
-    # Create a frame to hold the Text widget and Scrollbar for textbox2
     textbox2_frame = tk.Frame(root)
     textbox2_frame.pack(pady=8)
 

@@ -76,20 +76,6 @@ def build_codes(node, prefix = "", code_map = {}):
 
     return code_map
 
-# # Step 4: Get user input and compute Huffman Encoding
-# file_path = open_file_dialog()
-# text = read_file_as_ascii(file_path)
-
-# freq_map = {char: text.count(char) for char in set(text)}
-
-# root = build_huffman_tree(freq_map)
-# codes = build_codes(root)
-
-# encoded_text = "".join(codes[char] for char in text)
-
-# print("Original Text: ", text)
-# print("Huffman Codes: ", codes)
-# print("Encoded Text: ", encoded_text)
 
 def save_to_bitarray_binary(encoded_text, file_path, file_path_og):
     """Convert binary-encoded text to a bitarray and save it to a binary file."""
@@ -105,8 +91,6 @@ def save_to_bitarray_binary(encoded_text, file_path, file_path_og):
     except Exception as e:
         print(f"Error converting to bitarray or saving: {e}")
 
-# save_location = "compressed.bin"
-# save_to_bitarray_binary(encoded_text, save_location)
 
 def read_binary_file(file_path):
     try:
@@ -140,14 +124,6 @@ def huffman_decode_from_binary_file(file_path, huffman_codes):
     
     return decoded_text
 
-# # Example usage
-# file_path = "compressed.bin"  # Specify the binary file path
-
-# decoded_result = huffman_decode_from_binary_file(file_path, codes)
-
-# if decoded_result is not None:
-#     print("Decoded Text: ", decoded_result)
-
 
 def encodeAndDecode(trigger, filePath2):
     # Step 4: Get user input and compute Huffman Encoding
@@ -170,9 +146,6 @@ def encodeAndDecode(trigger, filePath2):
 
     encoded_text = "".join(codes[char] for char in text)
 
-    # print("Original Text: ", text)
-    # print("Huffman Codes: ", codes)
-    # print("Encoded Text: ", encoded_text)
 
     save_location = "compressed.bin"
     save_to_bitarray_binary(encoded_text, save_location, file_path)
@@ -180,9 +153,8 @@ def encodeAndDecode(trigger, filePath2):
     file_path = "compressed.bin"  # Specify the binary file path
 
     # Get byte sizes of original and compressed files
-    #global original_file_size, compressed_file_size
-    original_file_size = os.path.getsize(file_path_og)  # Assuming file_path_og is the path to the original file
-    compressed_file_size = os.path.getsize(file_path)   # Path to the compressed file
+    original_file_size = os.path.getsize(file_path_og)  
+    compressed_file_size = os.path.getsize(file_path)   
         
     print(f"Original file size: {original_file_size} bytes")
     print(f"Compressed file size: {compressed_file_size} bytes")
@@ -192,8 +164,6 @@ def encodeAndDecode(trigger, filePath2):
     if text == decoded_result:
         show_popup()
 
-    # if decoded_result is not None:
-    #     print("Decoded Text: ", decoded_result)
     print("File Path Test 3 ", file_path)
     if trigger == "encode":
         return codes, text, encoded_text, file_path_og, original_file_size, compressed_file_size
@@ -202,6 +172,4 @@ def encodeAndDecode(trigger, filePath2):
     else:
         print("Error")
 
-# def get_byte_sizes():
-#     return original_file_size, compressed_file_size
 
